@@ -1,0 +1,53 @@
+<!--
+ * @Author: LeoCong
+ * @Date: 2021-12-12 22:43:56
+ * @LastEditors: LeoCode
+ * @LastEditTime: 2021-12-13 00:04:10
+ * @Description: 打开摄像头
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打开摄像头</title>
+</head>
+<body>
+  <h1>打开摄像头</h1>
+  <p>
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices" target="_blank">MediaDevices 文档</a>
+  </p>
+  <p>
+    <button class="open-camera">打开摄像头</button>
+  </p>
+  <p>
+    <video class="video" width="640px" height="480px" autoplay playsInline></video>
+  </p>
+
+  <script>
+    let openCameraBtn = document.querySelector('.open-camera')
+    let videoEl = document.querySelector('.video')
+
+    openCameraBtn.addEventListener('click', async () => {
+      try {
+        // 根据约束条件获取媒体流
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true, // 启用视频
+          audio: false // 禁用音频
+        })
+
+        // 获取视频轨
+        const videoTracks = stream.getVideoTracks()
+        console.log('videoTracks :>> ', videoTracks)
+
+        // 将媒体流指定为 video 的播放源
+        videoEl.srcObject = stream
+
+      } catch (err) {
+        console.log('Error :>> ', err)
+      }
+    })
+  </script>
+</body>
+</html>

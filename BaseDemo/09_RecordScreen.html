@@ -1,0 +1,101 @@
+<!--
+ * @Author: LeoCode
+ * @Date: 2021-12-10 16:54:49
+ * @LastEditors: LeoCode
+ * @LastEditTime: 2021-12-15 00:56:07
+ * @Description: 录制屏幕
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>录制屏幕</title>
+</head>
+<body>
+  <h1>录制屏幕</h1>
+  <p>
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaRecorder" target="_blank">MediaRecorder 文档</a>
+  </p>
+  <p>
+    <button class="start-record">开始录屏</button>
+  </p>
+  <p>
+    <video class="video" width="640px" height="480px" autoplay controls></video>
+  </p>
+
+  <script>
+    let startRecordBtn = document.querySelector('.start-record')
+    let videoEl = document.querySelector('.video')
+
+    // 开始录制按钮
+    startRecordBtn.addEventListener('click', async () => {
+      try {
+        // 让用户选择和授权捕获展示的内容（要共享的屏幕或窗口），从而获取媒体流，返回值是一个 Promise
+        let stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true, // 启用视频
+          audio: false // 禁用音频
+        })
+
+        // 设备支持的文件类型
+        const mime = MediaRecorder.isTypeSupported('video/webm; codecs=vp9') ? 'video/webm; codecs=vp9' : 'video/webm'
+
+        // 创建媒体流录制实例
+        let mediaRecorder = new MediaRecorder(stream, {
+          mimeType: mime
+        })
+
+        // 手动开始录屏
+        mediaRecorder.start()
+
+        // 缓存容器
+        let chunks = []
+        // 监听数据是否可用，该事件可用于获取录制的媒体资源
+        mediaRecorder.addEventListener('dataavailable', (e) => {
+          console.log('获取媒体资源 :>> ', e)
+          // 事件的 data 属性中提供了一个可用的 Blob 对象
+          chunks.push(e.data)
+        })
+
+        // 监听停止录制
+        mediaRecorder.addEventListener('stop', (e) => {
+          console.log('停止录屏 :>> ', e)
+          let blob = new Blob(chunks, {
+            type: chunks[0].type
+          })
+          // 将数据转成可访问的 url 地址
+          let url = URL.createObjectURL(blob)
+
+          // 在 video 标签预览
+          videoEl.src = url
+
+          // 模拟点击链接下载
+          let a = document.createElement('a')
+          a.href = url
+          a.download = 'video.webm'
+          a.click()
+        })
+      } catch (err) {
+        // 捕获异常
+        console.log('Error :>> ', err)
+      }
+    })
+
+    // 暂停录屏
+    pauseRecordBtn.addEventListener('click', async () => {
+      console.log('暂停录屏 :>> ')
+    })
+
+    // 继续录屏
+    resumeRecordBtn.addEventListener('click', async () => {
+      console.log('继续录屏 :>> ')
+    })
+
+    // 停止录屏
+    stopRecordBtn.addEventListener('click', async () => {
+      console.log('停止录屏 :>> ')
+    })
+  </script>
+</body>
+</html>

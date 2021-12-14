@@ -1,0 +1,53 @@
+<!--
+ * @Author: LeoCode
+ * @Date: 2021-12-12 23:31:41
+ * @LastEditors: LeoCode
+ * @LastEditTime: 2021-12-12 23:54:41
+ * @Description: 打开麦克风
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打开麦克风</title>
+</head>
+<body>
+  <h1>打开麦克风</h1>
+  <p>
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices" target="_blank">MediaDevices 文档</a>
+  </p>
+  <p>
+    <button class="open-microphone">打开麦克风</button>
+  </p>
+  <p>
+    <audio class="audio" controls autoplay></audio>
+  </p>
+
+  <script>
+    let openMicrophoneBtn = document.querySelector('.open-microphone')
+    let audioEl = document.querySelector('.audio')
+
+    openMicrophoneBtn.addEventListener('click', async () => {
+      try {
+        // 根据约束条件获取媒体流
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: false, // 禁用视频
+          audio: true // 启用音频
+        })
+
+        // 将媒体流指定为 audio 的播放源
+        audioEl.srcObject = stream
+
+        stream.addEventListener('inactive', (e) => {
+          console.log('inactive :>> ', e)
+        })
+
+      } catch (err) {
+        console.log('Error :>> ', err)
+      }
+    })
+  </script>
+</body>
+</html>
