@@ -2,7 +2,7 @@
  * @Author: LeoCode
  * @Date: 2021-12-10 10:44:29
  * @LastEditors: LeoCode
- * @LastEditTime: 2021-12-12 23:53:27
+ * @LastEditTime: 2021-12-19 00:25:54
  * @Description: 屏幕共享
 -->
 <!DOCTYPE html>
@@ -16,24 +16,24 @@
 <body>
   <h1>屏幕共享</h1>
   <p>
-    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices/getDisplayMedia" target="_blank">getDisplayMedia 文档</a>
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices/getDisplayMedia" target="_blank">MediaDevices.getDisplayMedia() 文档</a>
   </p>
   <p>
     <button class="start-share">开始共享</button>
   </p>
   <p>
-    <video class="video" width="640px" height="480px" autoplay></video>
+    <video class="video" width="640" height="480" autoplay></video>
   </p>
 
   <script>
-    let startShareBtn = document.querySelector('.start-share')
-    let videoEl = document.querySelector('.video')
+    const startShareBtn = document.querySelector('.start-share')
+    const videoEl = document.querySelector('.video')
 
     startShareBtn.addEventListener('click', async () => {
 
       try {
         // 让用户选择和授权捕获展示的内容（要共享的屏幕或窗口），从而获取媒体流，返回值是一个 Promise
-        let stream = await navigator.mediaDevices.getDisplayMedia({
+        const stream = await navigator.mediaDevices.getDisplayMedia({
           video: true, // 启用视频
           audio: false // 禁用音频
         })

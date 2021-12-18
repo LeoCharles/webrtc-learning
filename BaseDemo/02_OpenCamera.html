@@ -2,7 +2,7 @@
  * @Author: LeoCong
  * @Date: 2021-12-12 22:43:56
  * @LastEditors: LeoCode
- * @LastEditTime: 2021-12-13 00:04:10
+ * @LastEditTime: 2021-12-19 00:25:23
  * @Description: 打开摄像头
 -->
 <!DOCTYPE html>
@@ -16,18 +16,18 @@
 <body>
   <h1>打开摄像头</h1>
   <p>
-    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices" target="_blank">MediaDevices 文档</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia" target="_blank">MediaDevices.getUserMedia() 文档</a>
   </p>
   <p>
     <button class="open-camera">打开摄像头</button>
   </p>
   <p>
-    <video class="video" width="640px" height="480px" autoplay playsInline></video>
+    <video class="video" width="640" height="480" autoplay playsInline></video>
   </p>
 
   <script>
-    let openCameraBtn = document.querySelector('.open-camera')
-    let videoEl = document.querySelector('.video')
+    const openCameraBtn = document.querySelector('.open-camera')
+    const videoEl = document.querySelector('.video')
 
     openCameraBtn.addEventListener('click', async () => {
       try {

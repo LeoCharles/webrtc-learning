@@ -2,7 +2,7 @@
  * @Author: LeoCode
  * @Date: 2021-12-12 23:45:32
  * @LastEditors: LeoCode
- * @LastEditTime: 2021-12-13 00:28:38
+ * @LastEditTime: 2021-12-19 00:25:35
  * @Description: 摄像头截取
 -->
 <!DOCTYPE html>
@@ -16,23 +16,23 @@
 <body>
   <h1>摄像头截取</h1>
   <p>
-    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices" target="_blank">MediaDevices 文档</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia" target="_blank">MediaDevices.getUserMedia() 文档</a>
   </p>
   <p>
     <button class="open-camera">打开摄像头</button>
     <button class="capture-camera">截取视频</button>
   </p>
   <p>
-    <video class="video" width="640px" height="480px" autoplay playsInline></video>
+    <video class="video" width="640" height="480" autoplay playsInline></video>
   </p>
   <p>
     <canvas class="canvas"></canvas>
   </p>
 
   <script>
-    let openCameraBtn = document.querySelector('.open-camera')
-    let captureCameraBtn = document.querySelector('.capture-camera')
-    let videoEl = document.querySelector('.video')
+    const openCameraBtn = document.querySelector('.open-camera')
+    const captureCameraBtn = document.querySelector('.capture-camera')
+    const videoEl = document.querySelector('.video')
 
     openCameraBtn.addEventListener('click', async () => {
       try {
@@ -53,7 +53,7 @@
     // 截屏处理
     captureCameraBtn.addEventListener('click', () => {
       // 获取画布
-      let canvasEl = document.querySelector('.canvas')
+      const canvasEl = document.querySelector('.canvas')
       // 设置画布的宽高为视频的宽高
       canvasEl.width = videoEl.width
       canvasEl.height = videoEl.height
@@ -62,9 +62,9 @@
       // 根据视频对象绘图
       ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height)
       // 将 canvas 转成 png 图片
-      let url = canvasEl.toDataURL('image/png')
+      const url = canvasEl.toDataURL('image/png')
       // 模拟点击下载
-      let a = document.createElement('a')
+      const a = document.createElement('a')
       a.href = url
       a.download = 'capture.png'
       a.click()

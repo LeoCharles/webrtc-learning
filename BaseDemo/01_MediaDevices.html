@@ -2,6 +2,43 @@
  * @Author: LeoCode
  * @Date: 2021-12-15 00:48:39
  * @LastEditors: LeoCode
- * @LastEditTime: 2021-12-15 00:48:39
+ * @LastEditTime: 2021-12-18 22:48:42
  * @Description: 获取媒体设备
 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>媒体设备</title>
+</head>
+<body>
+  <h1>媒体设备</h1>
+  <p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices" target="_blank">MediaDevices.enumerateDevices() 文档</a>
+  </p>
+  <p>
+    <button class="get-device">枚举媒体设备</button>
+  </p>
+
+  <script>
+    const getDeviceBtn = document.querySelector('.get-device')
+
+    getDeviceBtn.addEventListener('click', async () => {
+
+      try {
+        // 枚举所有媒体设备
+        const enumerateDevices = await navigator.mediaDevices.enumerateDevices()
+
+        enumerateDevices.forEach(device => {
+          console.log('类型：' + device.kind + '  名称：' + device.label + '  编号：' + device.deviceId + '  分组：' + device.groupId);
+        })
+
+      } catch (err) {
+        console.log('Error :>> ', err)
+      }
+    })
+  </script>
+</body>
+</html>

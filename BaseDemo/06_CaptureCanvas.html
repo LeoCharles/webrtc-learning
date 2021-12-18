@@ -1,0 +1,97 @@
+<!--
+ * @Author: LeoCode
+ * @Date: 2021-12-13 00:27:29
+ * @LastEditors: LeoCode
+ * @LastEditTime: 2021-12-19 00:23:53
+ * @Description: 捕获 Canvas 媒体流
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>捕获 Canvas 媒体流</title>
+</head>
+<body>
+  <h1>捕获 Canvas 媒体流</h1>
+  <p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/captureStream" target="_blank">HTMLCanvasElement.captureStream() 文档</a>
+  </p>
+  <p>
+    <button class="capture-canvas">开始捕获 canvas </button>
+  </p>
+  <p>
+    <div>简易白板</div>
+    <canvas class="canvas" width="640" height="480"></canvas>
+  </p>
+  <p>
+    <div>捕获后播放视频：</div>
+    <video class="player-video" width="640" height="480" autoplay playsInline></video>
+  </p>
+
+  <script>
+    const captureCanvasBtn = document.querySelector('.capture-canvas')
+    const playerVideo = document.querySelector('.player-video')
+    const canvasEl = document.querySelector('.canvas')
+    const ctx = canvasEl.getContext('2d')
+
+    // 画线
+    const drawLine = () => {
+      //  设置画布背景
+      ctx.fillStyle = '#ddd'
+      ctx.fillRect(0, 0, 640, 480)
+      // 画笔颜色
+      ctx.strokeStyle = '#ff000'
+      // 线宽
+      ctx.lineWidth = 1
+
+      // 监听鼠标按下事件
+      canvasEl.addEventListener('mousedown', handleMousedown)
+
+      // 监听鼠标抬起事件
+      canvasEl.addEventListener('mouseup', handleMouseup)
+    }
+
+    // 鼠标按下，开始绘制
+    const handleMousedown = (e) => {   
+      // 开始新的路径
+      ctx.beginPath()
+      // 移动到鼠标按下的坐标点，作为起点
+      ctx.moveTo(e.offsetX, e.offsetY)
+      // 开始绘制
+      ctx.stroke()
+      // 监听鼠标移动事件
+      canvasEl.addEventListener('mousemove', handleMousemove)
+    }
+
+    // 鼠标移动，持续画线
+    const handleMousemove = (e) => {
+      ctx.lineTo(e.offsetX, e.offsetY)
+      // 开始绘制
+      ctx.stroke()
+    }
+
+    // 鼠标抬起，结束绘制
+    const handleMouseup = (e) => {
+      // 移除鼠标移动事件
+      canvasEl.removeEventListener('mousemove', handleMousemove)
+    }
+
+    captureCanvasBtn.addEventListener('click', () => {
+      // 帧率
+      const fps = 25
+      // 捕获 canvas
+      const stream = canvasEl.captureStream(fps)
+      console.log('HTMLCanvasElement.captureStream() :>> ', stream)
+      
+      // 将播放器视频源指向媒体流
+      playerVideo.srcObject = stream 
+
+      // 开始画线
+      drawLine()
+    })
+
+  </script>
+</body>
+</html>

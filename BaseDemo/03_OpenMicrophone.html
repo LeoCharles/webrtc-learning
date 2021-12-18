@@ -2,7 +2,7 @@
  * @Author: LeoCode
  * @Date: 2021-12-12 23:31:41
  * @LastEditors: LeoCode
- * @LastEditTime: 2021-12-12 23:54:41
+ * @LastEditTime: 2021-12-18 22:49:59
  * @Description: 打开麦克风
 -->
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
 <body>
   <h1>打开麦克风</h1>
   <p>
-    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices" target="_blank">MediaDevices 文档</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia" target="_blank">MediaDevices.getUserMedia() 文档</a>
   </p>
   <p>
     <button class="open-microphone">打开麦克风</button>
@@ -26,8 +26,8 @@
   </p>
 
   <script>
-    let openMicrophoneBtn = document.querySelector('.open-microphone')
-    let audioEl = document.querySelector('.audio')
+    const openMicrophoneBtn = document.querySelector('.open-microphone')
+    const audioEl = document.querySelector('.audio')
 
     openMicrophoneBtn.addEventListener('click', async () => {
       try {

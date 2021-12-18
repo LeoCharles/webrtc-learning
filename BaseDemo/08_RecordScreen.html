@@ -2,7 +2,7 @@
  * @Author: LeoCode
  * @Date: 2021-12-10 16:54:49
  * @LastEditors: LeoCode
- * @LastEditTime: 2021-12-15 00:56:07
+ * @LastEditTime: 2021-12-19 00:26:03
  * @Description: 录制屏幕
 -->
 <!DOCTYPE html>
@@ -22,18 +22,18 @@
     <button class="start-record">开始录屏</button>
   </p>
   <p>
-    <video class="video" width="640px" height="480px" autoplay controls></video>
+    <video class="video" width="640" height="480" autoplay controls></video>
   </p>
 
   <script>
-    let startRecordBtn = document.querySelector('.start-record')
-    let videoEl = document.querySelector('.video')
+    const startRecordBtn = document.querySelector('.start-record')
+    const videoEl = document.querySelector('.video')
 
     // 开始录制按钮
     startRecordBtn.addEventListener('click', async () => {
       try {
         // 让用户选择和授权捕获展示的内容（要共享的屏幕或窗口），从而获取媒体流，返回值是一个 Promise
-        let stream = await navigator.mediaDevices.getDisplayMedia({
+        const stream = await navigator.mediaDevices.getDisplayMedia({
           video: true, // 启用视频
           audio: false // 禁用音频
         })
@@ -42,7 +42,7 @@
         const mime = MediaRecorder.isTypeSupported('video/webm; codecs=vp9') ? 'video/webm; codecs=vp9' : 'video/webm'
 
         // 创建媒体流录制实例
-        let mediaRecorder = new MediaRecorder(stream, {
+        const mediaRecorder = new MediaRecorder(stream, {
           mimeType: mime
         })
 
@@ -80,21 +80,6 @@
         // 捕获异常
         console.log('Error :>> ', err)
       }
-    })
-
-    // 暂停录屏
-    pauseRecordBtn.addEventListener('click', async () => {
-      console.log('暂停录屏 :>> ')
-    })
-
-    // 继续录屏
-    resumeRecordBtn.addEventListener('click', async () => {
-      console.log('继续录屏 :>> ')
-    })
-
-    // 停止录屏
-    stopRecordBtn.addEventListener('click', async () => {
-      console.log('停止录屏 :>> ')
     })
   </script>
 </body>

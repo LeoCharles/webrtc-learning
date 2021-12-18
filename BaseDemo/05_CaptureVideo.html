@@ -1,0 +1,48 @@
+<!--
+ * @Author: LeoCode
+ * @Date: 2021-12-13 00:24:49
+ * @LastEditors: LeoCode
+ * @LastEditTime: 2021-12-19 00:25:42
+ * @Description: 捕获 Video 媒体流
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>捕获 Video 媒体流</title>
+</head>
+<body>
+  <h1>捕获 Video 媒体流</h1>
+  <p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/captureStream" target="_blank">HTMLMediaElement.captureStream() 文档</a>
+  </p>
+  <p>
+    <div>原视频：</div>
+    <video class="source-video" src="./flower.webm" muted autoplay loop controls></video>
+  </p>
+  <p>
+    <div>捕获后播放视频：</div>
+    <video class="player-video" width="640" height="480" autoplay playsInline></video>
+  </p>
+
+  <script>
+    const sourceVideo = document.querySelector('.source-video')
+    const playerVideo = document.querySelector('.player-video')
+
+    // 监听源视频 video 标签的 canplay 事件
+    sourceVideo.addEventListener('canplay', (e) => {
+      
+      // HTMLMediaElement.captureStream() 方法可以获取任意媒体元素的媒体流
+      // 视频源需要在同一个源下才能捕获，否则报错
+      const stream = sourceVideo.captureStream()
+      // 返回一个 MediaStream 对象
+      console.log('HTMLMediaElement.captureStream() :>> ', stream)
+
+      // 将播放器视频源指向媒体流
+      playerVideo.srcObject = stream
+    })
+  </script>
+</body>
+</html>
