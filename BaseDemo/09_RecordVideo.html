@@ -2,6 +2,124 @@
  * @Author: LeoCode
  * @Date: 2021-12-15 00:53:27
  * @LastEditors: LeoCode
- * @LastEditTime: 2021-12-15 00:57:35
+ * @LastEditTime: 2021-12-21 00:45:15
  * @Description: 录制视频
 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>录制视频</title>
+</head>
+<body>
+  <h1>录制视频</h1>
+  <p>
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaRecorder" target="_blank">MediaRecorder 文档</a>
+  </p>
+  <p>
+    <button class="open-camera">打开摄像头</button>
+    <button class="start-record">开始录制</button>
+    <button class="stop-record">停止录制</button>
+    <button class="download">下载视频</button>
+  </p>
+  <p>
+    <div>摄像头预览</div>
+    <video class="preview-video" autoplay muted playsInline></video>
+  </p>
+  <p>
+    <div>录制的视频</div>
+    <video class="record-video" width="640" height="480" autoplay playsInline loop controls></video>
+  </p>
+
+  <script>
+    const openCameraBtn = document.querySelector('.open-camera')
+    const startRecordBtn = document.querySelector('.start-record')
+    const stopRecordBtn = document.querySelector('.stop-record')
+    const downloadBtn = document.querySelector('.download')
+    const previewVideo = document.querySelector('.preview-video')
+    const recordVideo = document.querySelector('.record-video')
+
+    let stream = null // 媒体流
+    let mediaRecorder = null // 媒体录制对象
+    let chunks = [] // 缓存容器
+
+    // 打开摄像头
+    openCameraBtn.addEventListener('click', async () => {
+      try {
+        // 根据约束条件获取媒体流
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            // 设置分辨率
+            width: 640, height: 480
+          },
+          audio: true // 开启音频
+        })
+        // 预览摄像头
+        previewVideo.srcObject = stream
+      } catch (err) {
+        console.log('Error :>> ', err)
+      }
+    })
+
+    // 开始录制
+    startRecordBtn.addEventListener('click', () => {
+      try {
+        // 指定 mimeType 类型
+        const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm'
+        // 创建媒体录制对象
+        mediaRecorder = new MediaRecorder(stream, {
+          mimeType: mime,
+        })
+
+        // 监听数据是否可用
+        mediaRecorder.addEventListener('dataavailable', (e) => {
+          console.log('数据可用 :>> ', e)
+          // 事件的 data 属性中提供了一个可用的 Blob 对象
+          if (e.data && e.data.size > 0) {
+            // 缓存数据
+            chunks.push(e.data)
+          }
+        })
+
+        // 监听停止事件，播放录制的视频
+        mediaRecorder.addEventListener('stop', (e) => {
+          console.log('录制停止 :>> ', e)
+          // 生成 blob 文件
+          const blob = new Blob(chunks, {type: 'video/webm'})
+          // 生成可访问的 url 地址
+          const url = URL.createObjectURL(blob)
+          // 播放录制的视频
+          recordVideo.src = url
+        })
+
+        // 开始录制，可以设置缓存区时长，单位为毫秒
+        mediaRecorder.start(1000)
+      } catch (e) {
+        console.log(e)
+      }
+    })
+
+    // 手动停止录制
+    stopRecordBtn.addEventListener('click', () => {
+      if (mediaRecorder) {
+        mediaRecorder.stop()
+      }
+    })
+
+    // 点击下载视频
+    downloadBtn.addEventListener('click', () => {
+      // 生成 blob 文件
+      const blob = new Blob(chunks, {type: 'video/webm'})
+      // 生成可访问的 url 地址
+      const url = URL.createObjectURL(blob)
+      // 创建下载链接
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'record.webm'
+      a.click()
+    })
+  </script>
+</body>
+</html>
